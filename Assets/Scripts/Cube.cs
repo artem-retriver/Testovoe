@@ -4,27 +4,20 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
+    //[SerializeField] public GameManager manager;
     public int speed;
     public int range;
     public double time;
 
-    private Vector3 _newPosition;
+    public Rigidbody _rb;
 
-    private void Update()
+    private void Start()
     {
-       // MoveCube();
+        _rb = GetComponent<Rigidbody>();
     }
 
-    public void MoveCube()
+    public void UnMoveCube()
     {
-        if(speed != 0 && range != 0 && time != 0)
-        {
-            _newPosition = new Vector3(0, 0, range + speed * Time.deltaTime);
-            transform.position = _newPosition;  
-        }
-        else
-        {
-            Debug.Log("¬введите данные");
-        }
+        Destroy(this.gameObject);
     }
 }
