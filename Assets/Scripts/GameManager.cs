@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_InputField _inputSpeed;
     [SerializeField] private TMP_InputField _inputRange;
     [SerializeField] private TMP_InputField _inputTime;
-    //[SerializeField] public TMP_Dropdown _dropDown;
+    [SerializeField] public TMP_Dropdown _dropDown;
+    [SerializeField] public Obstacle _obstacle;
 
     public List<Cube> _currentCube;
 
@@ -20,25 +21,21 @@ public class GameManager : MonoBehaviour
     private int _currentRangeCube;
     private int _currentTimeCube;
 
-    private bool _isPlaying;
-
     private void Start()
     {
         _currentCube.Add(Instantiate(_cube));
         _currentCube[0].gameObject.SetActive(true);
-        
-        //_dropDown = GetComponent<TMP_Dropdown>();
     }
 
-    private void Update()
+    public void ChangeColors()
     {
-        /*var x = _currentCube.Count;
+        var x = _currentCube.Count;
 
         if (_dropDown.value == 0)
         {
             _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.black;
         }
-        else if( _dropDown.value == 1)
+        else if (_dropDown.value == 1)
         {
             _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.green;
         }
@@ -49,25 +46,12 @@ public class GameManager : MonoBehaviour
         else if (_dropDown.value == 3)
         {
             _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.blue;
-        }*/
+        }
     }
 
-    private void FixedUpdate()
+    public void DestroyCubeList()
     {
-        var x = _currentCube.Count;
-
-        if (_isPlaying == true)
-        {
-            var array = _currentCube.Where(x => x.transform.position == new Vector3(0, 0, _currentCube[0].range)).ToArray();
-            
-            if (array.Length > 0)
-            {
-                array[0].transform.position = new Vector3(0, 1, 0);
-
-                _currentCube[0].isOn = true;
-                _currentCube.RemoveAt(0);
-            }
-        }
+        _currentCube.RemoveAt(0);
     }
 
     public void MoveCube()
@@ -78,15 +62,16 @@ public class GameManager : MonoBehaviour
         {
             _playButton.gameObject.SetActive(false);
 
-            _isPlaying = true;
-
-            _currentCube[x-1]._rb.velocity = Vector3.forward * _currentCube[0].speed;
+            _currentCube[x - 1]._rb.velocity = Vector3.forward * _currentCube[0].speed;
             StartCoroutine(WaitInstatiateCube());
         }
         else
         {
             Debug.Log("¬введите данные");
         }
+
+        _obstacle.gameObject.SetActive(true);
+        _obstacle.transform.position = new Vector3(0, 0, _currentCube[0].range);
     }
 
     public void InstantiateCube()
@@ -99,6 +84,23 @@ public class GameManager : MonoBehaviour
         _currentCube[x].range = _currentRangeCube;
         _currentCube[x].speed = _currentspeedCube;
         _currentCube[x].time = _currentTimeCube;
+
+        if (_dropDown.value == 0)
+        {
+            _currentCube[x].GetComponent<Renderer>().material.color = Color.black;
+        }
+        else if (_dropDown.value == 1)
+        {
+            _currentCube[x].GetComponent<Renderer>().material.color = Color.green;
+        }
+        else if (_dropDown.value == 2)
+        {
+            _currentCube[x].GetComponent<Renderer>().material.color = Color.red;
+        }
+        else if (_dropDown.value == 3)
+        {
+            _currentCube[x].GetComponent<Renderer>().material.color = Color.blue;
+        }
 
         MoveCube();
     }

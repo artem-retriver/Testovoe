@@ -4,28 +4,24 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
+    [SerializeField] private GameManager _gameManager;
     public int speed;
     public int range;
     public int time;
-    public bool isOn;
 
     public Rigidbody _rb;
 
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if(isOn == true)
+        if(other.TryGetComponent(out Obstacle obstacle))
         {
-            UnMoveCube();
+            Destroy(this.gameObject);
+            _gameManager.DestroyCubeList();
         }
     }
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-    }
-
-    public void UnMoveCube()
-    {
-        Destroy(this.gameObject);
     }
 }
