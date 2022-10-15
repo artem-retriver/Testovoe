@@ -7,121 +7,123 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] public Button _playButton;
     [SerializeField] public Cube _cube;
     [SerializeField] private TMP_InputField _inputSpeed;
     [SerializeField] private TMP_InputField _inputRange;
     [SerializeField] private TMP_InputField _inputTime;
+    [SerializeField] public TMP_Dropdown _dropDown;
 
     public List<Cube> _currentCube;
-    //[SerializeField] private  _text;
 
     private int _currentspeedCube;
     private int _currentRangeCube;
-    private double _currentTimeCube;
+    private int _currentTimeCube;
+
+    private bool _isPlaying;
 
     private void Start()
     {
         _currentCube.Add(Instantiate(_cube));
         _currentCube[0].gameObject.SetActive(true);
-        //_cube = GetComponent<Cube>();
-        //_currentCube = _cube;
-        //Instantiate(_cube);
+        
+        _dropDown = GetComponent<TMP_Dropdown>();
     }
 
     private void Update()
     {
-        for (int i = 0; i < _currentCube.Count; i++)
-        {
-            if (_currentCube[i].transform.position.z != 0)
-            {
-                if (_currentCube[i].transform.position == new Vector3(0, 0, _currentCube[i].range))
-                {
-                    var array = _currentCube.Where(x => x.range == _currentRangeCube);
+        var x = _currentCube.Count;
 
-                    foreach (var x in array)
-                    {
-                        _currentCube.Remove(x);
-                        Destroy(x.gameObject);
-                    }
-                }
+        if (_dropDown.value == 0)
+        {
+            _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.black;
+        }
+        else if( _dropDown.value == 1)
+        {
+            _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.green;
+        }
+        else if (_dropDown.value == 2)
+        {
+            _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.red;
+        }
+        else if (_dropDown.value == 3)
+        {
+            _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.blue;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        var x = _currentCube.Count;
+
+        if (_isPlaying == true)
+        {
+            var array = _currentCube.Where(x => x.transform.position == new Vector3(0, 0, _currentCube[0].range)).ToArray();
+            
+            if (array.Length > 0)
+            {
+                array[0].transform.position = new Vector3(0, 1, 0);
+
+                _currentCube[0].isOn = true;
+                _currentCube.RemoveAt(0);
             }
         }
     }
 
     public void MoveCube()
     {
-        for (int i = 0; i < _currentCube.Count; i++)
+        var x = _currentCube.Count;
+            
+        if (_currentCube[0].speed != 0 && _currentCube[0].range != 0 && _currentCube[0].time != 0)
         {
-            if (_currentCube[i].speed != 0 && _currentCube[i].range != 0 && _currentCube[i].time != 0)
-            {
-                _currentCube[i]._rb.velocity = Vector3.forward * _currentCube[i].speed;
-                StartCoroutine(WaitInstatiateCube());
-            }
-            else
-            {
-                Debug.Log("¬введите данные");
-            }
+            _playButton.gameObject.SetActive(false);
+
+            _isPlaying = true;
+
+            _currentCube[x-1]._rb.velocity = Vector3.forward * _currentCube[0].speed;
+            StartCoroutine(WaitInstatiateCube());
         }
-        
+        else
+        {
+            Debug.Log("¬введите данные");
+        }
     }
 
     public void InstantiateCube()
     {
+        var x = _currentCube.Count;
         _currentCube.Add(Instantiate(_cube));
 
-        for (int i = 0; i < _currentCube.Count; i++)
-        {
-            _currentCube[i].gameObject.SetActive(true);
+        _currentCube[x].gameObject.SetActive(true);
 
-            _currentCube[i].range = _currentRangeCube;
-            _currentCube[i].speed = _currentspeedCube;
-            _currentCube[i].time = _currentTimeCube;
+        _currentCube[x].range = _currentRangeCube;
+        _currentCube[x].speed = _currentspeedCube;
+        _currentCube[x].time = _currentTimeCube;
 
-            //Debug.Log(_currentCube.speed);
-            MoveCube();
-            //_currentCube[i]._rb.velocity = Vector3.forward * _currentCube[i].speed;
-        }
-
-        Debug.Log(_currentspeedCube);
-
-       
-    }
-
-    public void DestroyObject()
-    {
-        
+        MoveCube();
     }
 
     public void SpeedCube()
     {
-        for (int i = 0; i < _currentCube.Count; i++)
-        {
-            int.TryParse(_inputSpeed.text, out _currentCube[i].speed);
-            _currentspeedCube = _currentCube[i].speed;
-        }
+        int.TryParse(_inputSpeed.text, out _currentCube[0].speed);
+        _currentspeedCube = _currentCube[0].speed;
     }
 
     public void RangeCube()
     {
-        for (int i = 0; i < _currentCube.Count; i++)
-        {
-            int.TryParse(_inputRange.text, out _currentCube[i].range);
-            _currentRangeCube = _currentCube[i].range;
-        }
+        int.TryParse(_inputRange.text, out _currentCube[0].range);
+        _currentRangeCube = _currentCube[0].range;
     }
 
     public void TimeCube()
     {
-        for (int i = 0; i < _currentCube.Count; i++)
-        {
-            double.TryParse(_inputTime.text, out _currentCube[i].time);
-            _currentTimeCube = _currentCube[i].time;
-        }
+        int.TryParse(_inputTime.text, out _currentCube[0].time);
+        _currentTimeCube = _currentCube[0].time;
     }
 
     private IEnumerator WaitInstatiateCube()
     {
-        yield return new WaitForSeconds(_currentspeedCube);
+        yield return new WaitForSeconds(_currentTimeCube);
         InstantiateCube();
     }
 }

@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    //[SerializeField] public GameManager manager;
     public int speed;
     public int range;
-    public double time;
+    public int time;
+    public bool isOn;
 
     public Rigidbody _rb;
+
+    private void Update()
+    {
+        if(isOn == true)
+        {
+            UnMoveCube();
+        }
+    }
 
     private void Start()
     {
