@@ -62,6 +62,9 @@ public class GameManager : MonoBehaviour
         {
             _playButton.gameObject.SetActive(false);
 
+            _obstacle.gameObject.SetActive(true);
+            _obstacle.transform.position = new Vector3(0, 0, _currentCube[0].range);
+
             _currentCube[x - 1]._rb.velocity = Vector3.forward * _currentCube[0].speed;
             StartCoroutine(WaitInstatiateCube());
         }
@@ -70,8 +73,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("¬введите данные");
         }
 
-        _obstacle.gameObject.SetActive(true);
-        _obstacle.transform.position = new Vector3(0, 0, _currentCube[0].range);
+        
     }
 
     public void InstantiateCube()
