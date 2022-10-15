@@ -157,7 +157,6 @@ MonoBehaviour:
   _inputSpeed: {fileID: 257345857}
   _inputRange: {fileID: 1602742897}
   _inputTime: {fileID: 544380899}
-  _dropDown: {fileID: 1541124356}
   _currentCube: []
 --- !u!4 &26032194
 Transform:
@@ -2348,7 +2347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &843591175
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3621,7 +3620,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1541124355
 RectTransform:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_InputField _inputSpeed;
     [SerializeField] private TMP_InputField _inputRange;
     [SerializeField] private TMP_InputField _inputTime;
-    [SerializeField] public TMP_Dropdown _dropDown;
+    //[SerializeField] public TMP_Dropdown _dropDown;
 
     public List<Cube> _currentCube;
 
@@ -27,12 +27,12 @@ public class GameManager : MonoBehaviour
         _currentCube.Add(Instantiate(_cube));
         _currentCube[0].gameObject.SetActive(true);
         
-        _dropDown = GetComponent<TMP_Dropdown>();
+        //_dropDown = GetComponent<TMP_Dropdown>();
     }
 
     private void Update()
     {
-        var x = _currentCube.Count;
+        /*var x = _currentCube.Count;
 
         if (_dropDown.value == 0)
         {
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         else if (_dropDown.value == 3)
         {
             _currentCube[x - 1].GetComponent<Renderer>().material.color = Color.blue;
-        }
+        }*/
     }
 
     private void FixedUpdate()
